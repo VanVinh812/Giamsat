@@ -200,7 +200,6 @@ td{padding:13px 16px}
 </head>
 <body>
 
-<!-- CONFIG MODAL -->
 <div class="modal-overlay" id="config-modal">
   <div class="modal-box">
     <div class="modal-title">⚙️ Kết nối Database</div>
@@ -231,7 +230,6 @@ td{padding:13px 16px}
   </div>
 </div>
 
-<!-- LOGIN PAGE -->
 <div id="login-page">
   <div class="login-card">
     <div class="school-badge">
@@ -260,7 +258,6 @@ td{padding:13px 16px}
   </div>
 </div>
 
-<!-- MAIN APP -->
 <div id="app">
   <div id="sync-banner" class="sync-banner">⚠️ Đang dùng chế độ offline — dữ liệu chỉ lưu trên máy này, không đồng bộ với các thành viên khác</div>
 
@@ -293,7 +290,6 @@ td{padding:13px 16px}
       <button class="tab-btn" onclick="switchTab('profile',this)">👤 Hồ Sơ</button>
     </div>
 
-    <!-- ĐIỂM DANH -->
     <div class="tab-content active" id="tab-checkin">
       <div class="section-title">📸 Điểm danh sự kiện</div>
       <div class="section-sub">Gửi ảnh tham gia và nhập tên sự kiện để hệ thống ghi nhận.</div>
@@ -329,7 +325,6 @@ td{padding:13px 16px}
       </div>
     </div>
 
-    <!-- BẢNG TỔNG HỢP -->
     <div class="tab-content" id="tab-dashboard">
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-icon blue">👥</div><div><div class="stat-label">Tổng thành viên</div><div class="stat-value">58</div></div></div>
@@ -361,14 +356,12 @@ td{padding:13px 16px}
       </div>
     </div>
 
-    <!-- LỊCH SỬ -->
     <div class="tab-content" id="tab-history">
       <div class="section-title">📋 Lịch sử điểm danh</div>
       <div class="section-sub">Toàn bộ các lần ghi nhận của cả lớp.</div>
       <div class="card"><div class="card-body"><div id="history-list"><div style="text-align:center;color:var(--text3);padding:32px;font-size:14px">⏳ Đang tải...</div></div></div></div>
     </div>
 
-    <!-- HỒ SƠ -->
     <div class="tab-content" id="tab-profile">
       <div class="profile-header">
         <div class="profile-avatar" id="profile-avatar">?</div>
@@ -468,7 +461,7 @@ const CLASS_MEMBERS = [
 let currentUser = null;
 let uploadedImage = null;
 let attendanceLog = [];  // luôn lấy từ server/localStorage
-const API_URL = 'https://script.google.com/macros/s/AKfycbxo338HBsZ_iMsx1uxxabAQGe5CGuRxXo6nMSnlIvhqUEiAcSbaDZYgiAKCh6JFBlOL7w/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxu1RcAMBcZ86YRYgdUju5JkDQdyQQQNhbtjCKf_5sfLBCiM6K2PmjpEU_wCpDI2WVFWg/exec';
 let apiUrl = localStorage.getItem('api_url') || API_URL;
 let isOnline = false;
 let syncing = false;
@@ -662,7 +655,8 @@ async function submitCheckin() {
         name:  record.name,
         event: record.event,
         date:  record.date,
-        note:  record.note || ''
+        note:  record.note || '',
+        t: Date.now() // FIX BỘ NHỚ DEM TRÌNH DUYỆT (CHỐNG CACHE)
       });
       const res = await fetch(apiUrl + '?' + params.toString(), {
         method: 'GET',
