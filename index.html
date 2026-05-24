@@ -6,43 +6,118 @@
 <title>Hệ Thống Điểm Rèn Luyện - Lớp 66.DDT-3</title>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root { --primary:#1a3a5c; --primary-light:#2563a8; --accent:#f59e0b; --success:#10b981; --danger:#ef4444; --warning:#f97316; --bg:#f0f4f8; --surface:#fff; --text:#1e293b; --text2:#64748b; --shadow:0 1px 3px rgba(0,0,0,.08); }
+:root {
+  --primary:#1a3a5c;--primary-light:#2563a8;--accent:#f59e0b;
+  --success:#10b981;--danger:#ef4444;--warning:#f97316;
+  --bg:#f0f4f8;--surface:#fff;--surface2:#f8fafc;
+  --border:#e2e8f0;--text:#1e293b;--text2:#64748b;--text3:#94a3b8;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.04);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.12);
+  --radius:12px;--radius-sm:8px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--text);padding:20px}
-#app{max-width:800px;margin:0 auto}
-.card{background:var(--surface);padding:20px;border-radius:12px;box-shadow:var(--shadow);margin-bottom:20px}
-.tab-btn{padding:10px 20px;border:none;background:#e2e8f0;border-radius:8px;cursor:pointer;margin-right:10px}
-.tab-btn.active{background:var(--primary);color:#fff}
-input, button{width:100%;padding:12px;margin-bottom:10px;border:1px solid #ddd;border-radius:8px}
-button{background:var(--primary);color:#fff;cursor:pointer;font-weight:600}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+
+/* LOGIN */
+#login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f2744 0%,#1a3a5c 40%,#1e4976 100%);position:relative;overflow:hidden}
+.login-card{background:var(--surface);border-radius:20px;padding:48px 44px;width:430px;box-shadow:0 24px 64px rgba(0,0,0,.3);position:relative;z-index:1}
+.school-badge{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.school-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.school-info h2{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:.05em;text-transform:uppercase}
+.school-info p{font-size:16px;font-weight:700;color:var(--text)}
+.login-title{font-size:26px;font-weight:700;margin-bottom:6px}
+.login-sub{color:var(--text2);font-size:14px;margin-bottom:32px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.form-group input{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:15px;color:var(--text);background:var(--surface2);outline:none;transition:border-color .2s,box-shadow .2s}
+.form-group input:focus{border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(37,99,168,.12);background:#fff}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border:none;border-radius:var(--radius-sm);font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.login-btn:hover{opacity:.9}
+.login-hint{margin-top:20px;padding:12px 14px;background:#eff6ff;border-radius:var(--radius-sm);border:1px solid #bfdbfe;font-size:12px;color:var(--primary-light)}
+.login-hint span{font-weight:700}
+
+/* APP */
+#app{display:none;min-height:100vh}
+.main-content{max-width:1280px;margin:0 auto;padding:28px 28px 48px}
+.tabs{display:flex;gap:4px;background:var(--surface);border-radius:var(--radius);padding:5px;box-shadow:var(--shadow);margin-bottom:28px;width:fit-content}
+.tab-btn{padding:10px 22px;border:none;background:transparent;border-radius:9px;font-family:inherit;font-size:14px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn.active{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(26,58,92,.3)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* BẢNG & THỐNG KÊ */
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:28px}
+.card-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.card-body{padding:24px}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--surface2);padding:12px 16px;text-align:left;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase}
+td{padding:13px 16px;border-bottom:1px solid var(--border)}
 </style>
 </head>
 <body>
 
-<div id="login-page" style="max-width:400px;margin:100px auto;text-align:center">
-    <h2>Đăng nhập Lớp 66.DDT-3</h2>
-    <input type="text" id="mssv" placeholder="MSSV">
-    <input type="password" id="pass" placeholder="Mật khẩu (abc+MSSV)">
-    <button onclick="doLogin()">Đăng nhập</button>
+<div id="login-page">
+  <div class="login-card">
+    <div class="school-badge">
+      <div class="school-icon">🎓</div>
+      <div class="school-info">
+        <h2>Hệ Thống Quản Lý</h2>
+        <p>Lớp 66.DDT-3</p>
+      </div>
+    </div>
+    <div class="login-title">Đăng nhập</div>
+    <div class="form-group">
+      <label>Mã số sinh viên</label>
+      <input type="text" id="mssv-input" placeholder="VD: 66134532">
+    </div>
+    <div class="form-group">
+      <label>Mật khẩu</label>
+      <input type="password" id="pass-input" placeholder="VD: abc66134532">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">🔐 Đăng nhập</button>
+  </div>
 </div>
 
-<div id="app" style="display:none">
-    <div class="card">
-        <h3>Điểm danh</h3>
-        <input type="text" id="event" placeholder="Tên sự kiện">
-        <button onclick="submit()">Gửi xác nhận</button>
+<div id="app">
+  <div class="main-content">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('checkin',this)">📸 Điểm Danh</button>
+      <button class="tab-btn" onclick="switchTab('dashboard',this)">📊 Bảng Tổng Hợp</button>
     </div>
+
+    <div class="tab-content active" id="tab-checkin">
+      <div class="card">
+        <div class="card-header"><h3>📸 Điểm danh sự kiện</h3></div>
+        <div class="card-body">
+            <input type="text" id="event-title" placeholder="Tên sự kiện" style="width:100%;padding:10px;margin-bottom:10px">
+            <button class="login-btn" id="submit-btn" onclick="submitCheckin()">✅ Gửi điểm danh</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-dashboard">
+        <div class="card">
+            <div class="card-body">
+                <table id="ranking-table">
+                    <thead><tr><th>Họ tên</th><th>MSSV</th><th>Lần tham gia</th></tr></thead>
+                    <tbody id="ranking-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
 </div>
 
 <script>
+// LINK API ĐÃ CẬP NHẬT
 const API_URL = 'https://script.google.com/macros/s/AKfycbx2QkD4Hy1foicN2Wh1exl06pRp99lhygwIEzxQBbiiUSWll2WWQ0r8S_r0advbBoBR/exec';
 let currentUser = null;
 
 function doLogin() {
-    const mssv = document.getElementById('mssv').value;
-    const pass = document.getElementById('pass').value;
-    if (pass === 'abc' + mssv) {
-        currentUser = { mssv };
+    const mssv = document.getElementById('mssv-input').value.trim();
+    const pass = document.getElementById('pass-input').value.trim();
+    if(pass === 'abc' + mssv) {
+        currentUser = { mssv: mssv, name: 'Sinh viên' };
         document.getElementById('login-page').style.display = 'none';
         document.getElementById('app').style.display = 'block';
     } else {
@@ -50,16 +125,24 @@ function doLogin() {
     }
 }
 
-async function submit() {
-    const event = document.getElementById('event').value;
-    const url = `${API_URL}?action=checkin&mssv=${currentUser.mssv}&event=${encodeURIComponent(event)}&date=${new Date().toISOString().split('T')[0]}`;
+function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+}
+
+async function submitCheckin() {
+    const title = document.getElementById('event-title').value.trim();
+    if(!title) return alert('Nhập tên sự kiện!');
+    
+    const url = `${API_URL}?action=checkin&mssv=${currentUser.mssv}&event=${encodeURIComponent(title)}&date=${new Date().toISOString().split('T')[0]}`;
     try {
         const res = await fetch(url);
         const data = await res.json();
-        if(data.success) alert('Điểm danh thành công!');
-        else alert('Lỗi: ' + data.error);
+        alert('Đã gửi thành công!');
     } catch(e) {
-        alert('Lỗi kết nối!');
+        alert('Lỗi!');
     }
 }
 </script>
