@@ -571,8 +571,12 @@ async function syncData(showFeedback) {
 
   if (apiUrl) {
     try {
-      const res = await fetch(apiUrl + '?action=getAll', { method: 'GET' });
-      const json = await res.json();
+      const url = apiUrl + '?action=getAll&t=' + Date.now();
+      const res = await fetch(url, { method: 'GET', redirect: 'follow' });
+      const text = await res.text();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON in response');
+      const json = JSON.parse(jsonMatch[0]);
       if (json.success) {
         attendanceLog = json.data || [];
         isOnline = true;
@@ -580,15 +584,13 @@ async function syncData(showFeedback) {
         const now = new Date().toLocaleTimeString('vi-VN');
         document.getElementById('last-sync-label').textContent = 'Đồng bộ lần cuối: ' + now;
         if (showFeedback) showToast('✅ Đã đồng bộ dữ liệu mới nhất!', 'success');
-      } else {
-        throw new Error('API error');
-      }
+      } else throw new Error(json.error || 'API error');
     } catch(err) {
-      // Fallback sang localStorage
+      console.warn('Sync error:', err.message);
       attendanceLog = JSON.parse(localStorage.getItem('attendance_log') || '[]');
       isOnline = false;
       setSyncStatus('offline');
-      if (showFeedback) showToast('⚠️ Không thể kết nối server, dùng dữ liệu cục bộ', 'error');
+      if (showFeedback) showToast('⚠️ Lỗi kết nối: ' + err.message, 'error');
     }
   } else {
     attendanceLog = JSON.parse(localStorage.getItem('attendance_log') || '[]');
@@ -653,24 +655,36 @@ async function submitCheckin() {
 
   if (apiUrl) {
     try {
-      const res = await fetch(apiUrl, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'checkin', ...record })
+      // Dùng GET params để tránh CORS preflight hoàn toàn
+      const params = new URLSearchParams({
+        action: 'checkin',
+        mssv:  record.mssv,
+        name:  record.name,
+        event: record.event,
+        date:  record.date,
+        note:  record.note || ''
       });
-      const json = await res.json();
-      if (json.success) saved = true;
-    } catch(e) {}
+      const res = await fetch(apiUrl + '?' + params.toString(), {
+        method: 'GET',
+        redirect: 'follow'
+      });
+      const text = await res.text();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const json = JSON.parse(jsonMatch[0]);
+        if (json.success) saved = true;
+      }
+    } catch(e) { console.warn('Checkin error:', e); }
   }
 
   if (!saved) {
-    // Fallback localStorage
     const local = JSON.parse(localStorage.getItem('attendance_log') || '[]');
     local.push(record);
     localStorage.setItem('attendance_log', JSON.stringify(local));
-    if (apiUrl) showToast('⚠️ Lưu offline (sẽ đồng bộ sau khi có mạng)', 'info');
+    if (apiUrl) showToast('⚠️ Lưu offline — kiểm tra lại kết nối', 'info');
     else showToast('✅ Đã ghi nhận (chế độ offline)', 'success');
   } else {
-    showToast(`✅ Đã đồng bộ: "${title}"`, 'success');
+    showToast(`✅ Đã lưu vào Google Sheets: "${title}"`, 'success');
   }
 
   // Reset form
