@@ -461,7 +461,11 @@ const CLASS_MEMBERS = [
 let currentUser = null;
 let uploadedImage = null;
 let attendanceLog = [];  // luôn lấy từ server/localStorage
-const API_URL = 'https://script.google.com/macros/s/AKfycbxu1RcAMBcZ86YRYgdUju5JkDQdyQQQNhbtjCKf_5sfLBCiM6K2PmjpEU_wCpDI2WVFWg/exec';
+
+// ĐÃ CẬP NHẬT LINK API MỚI NHẤT
+const API_URL = 'https://script.google.com/macros/s/AKfycbx2QkD4Hy1foicN2Wh1exl06pRp99lhygwIEzxQBbiiUSWll2WWQ0r8S_r0advbBoBR/exec';
+
+// Ưu tiên link API cố định, chỉ dùng localStorage nếu người dùng chủ động sửa
 let apiUrl = localStorage.getItem('api_url') || API_URL;
 let isOnline = false;
 let syncing = false;
@@ -470,7 +474,6 @@ document.getElementById('event-date').value = new Date().toISOString().split('T'
 
 // API đã được cấu hình sẵn — không cần hiện modal
 window.addEventListener('load', () => {
-  // Modal chỉ hiện nếu URL bị xóa thủ công
   if (!apiUrl) {
     document.getElementById('config-modal').classList.add('show');
   }
@@ -656,7 +659,7 @@ async function submitCheckin() {
         event: record.event,
         date:  record.date,
         note:  record.note || '',
-        t: Date.now() // FIX BỘ NHỚ DEM TRÌNH DUYỆT (CHỐNG CACHE)
+        t: Date.now() // FIX BỘ NHỚ ĐỆM TRÌNH DUYỆT (CHỐNG CACHE)
       });
       const res = await fetch(apiUrl + '?' + params.toString(), {
         method: 'GET',
